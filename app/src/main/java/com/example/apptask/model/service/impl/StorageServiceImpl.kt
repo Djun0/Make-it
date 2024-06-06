@@ -18,11 +18,14 @@ class StorageServiceImpl
 @Inject
 constructor(private val firestore: FirebaseFirestore, private val auth: AccountService) :
   StorageService {
-
+//Mỗi tác vụ được thể hiện bằng một tài liệu trong bộ sưu tập có tên tasks và mỗi tác vụ trong số chúng có một trường có tên userId
+  // lưu ý rằng một Flow mới sẽ được phát ra nếu trạng thái của currentUser thay đổi
   @OptIn(ExperimentalCoroutinesApi::class)
   override val tasks: Flow<List<Task>>
-    get() = emptyFlow()
-
+    get() =
+      auth.currentUser.flatMapLatest { user ->
+        firestore.collection(TASK_COLLECTION).whereEqualTo(USER_ID_FIELD, user.id).dataObjects()
+      }
   override suspend fun getTask(taskId: String): Task? =
     firestore.collection(TASK_COLLECTION).document(taskId).get().await().toObject()
 

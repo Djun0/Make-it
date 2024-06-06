@@ -2,6 +2,8 @@
 package com.example.apptask.screen.sign_up
 
 import androidx.compose.runtime.mutableStateOf
+import com.example.apptask.SETTINGS_SCREEN
+import com.example.apptask.SIGN_UP_SCREEN
 import com.example.apptask.R.string as AppText
 import com.example.apptask.common.ext.isValidEmail
 import com.example.apptask.common.ext.isValidPassword
@@ -55,7 +57,9 @@ class SignUpViewModel @Inject constructor(
     }
 
     launchCatching {
-      //TODO
+      //tiến hành xác thực nếu cuộc gọi thành công, thì sẽ chuyển sang màn hình tiếp theo ( SettingsScreen )
+      accountService.linkAccount(email, password)//nếu thất bại ở dòng này thì, bắt lâý ngoại lệ và xử lý, bỏ qua các dòng kế tiếp trong khối launchCatching
+      openAndPopUp(SETTINGS_SCREEN, SIGN_UP_SCREEN)
     }
   }
 }

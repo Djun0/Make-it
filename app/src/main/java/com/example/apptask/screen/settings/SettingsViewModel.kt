@@ -11,6 +11,7 @@ import com.example.apptask.screen.MakeItSoViewModel
 
 
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,8 +20,11 @@ class SettingsViewModel @Inject constructor(
   private val accountService: AccountService,
   private val storageService: StorageService
 ) : MakeItSoViewModel(logService) {
-  val uiState = SettingsUiState(isAnonymousAccount = true)
-
+  //val uiState = SettingsUiState(isAnonymousAccount = true)
+  // cho ViewModel lắng nghe trạng thái của người dùng hiện tại, kiểm tra xem tài khoản có ẩn danh hay không
+  val uiState = accountService.currentUser.map {
+    SettingsUiState(it.isAnonymous)
+  }
   fun onLoginClick(openScreen: (String) -> Unit) = openScreen(LOGIN_SCREEN)
 
   fun onSignUpClick(openScreen: (String) -> Unit) = openScreen(SIGN_UP_SCREEN)

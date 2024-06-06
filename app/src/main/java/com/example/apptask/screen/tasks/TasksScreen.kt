@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.apptask.R.drawable as AppIcon
 import com.example.apptask.R.string as AppText
 import com.example.apptask.common.composable.ActionToolbar
@@ -25,7 +26,11 @@ fun TasksScreen(
   openScreen: (String) -> Unit,
   viewModel: TasksViewModel = hiltViewModel()
 ) {
+  val tasks = viewModel
+    .tasks
+    .collectAsStateWithLifecycle(emptyList())
   TasksScreenContent(
+    tasks=tasks.value,
     onAddClick = viewModel::onAddClick,
     onSettingsClick = viewModel::onSettingsClick,
     onTaskCheckChange = viewModel::onTaskCheckChange,
@@ -40,6 +45,7 @@ fun TasksScreen(
 @Composable
 @ExperimentalMaterialApi
 fun TasksScreenContent(
+  tasks:List<Task>,
   modifier: Modifier = Modifier,
   onAddClick: ((String) -> Unit) -> Unit,
   onSettingsClick: ((String) -> Unit) -> Unit,
@@ -70,7 +76,7 @@ fun TasksScreenContent(
       Spacer(modifier = Modifier.smallSpacer())
 
       LazyColumn {
-        items(emptyList<Task>(), key = { it.id }) { taskItem ->
+        items(tasks, key = { it.id }) { taskItem ->
           TaskItem(
             task = taskItem,
             options = listOf(),
@@ -83,17 +89,3 @@ fun TasksScreenContent(
   }
 }
 
-@Preview(showBackground = true)
-@ExperimentalMaterialApi
-@Composable
-fun TasksScreenPreview() {
-  MakeItSoTheme {
-    TasksScreenContent(
-      onAddClick = { },
-      onSettingsClick = { },
-      onTaskCheckChange = { },
-      onTaskActionClick = { _, _, _ -> },
-      openScreen = { }
-    )
-  }
-}
