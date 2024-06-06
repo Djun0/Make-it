@@ -26,10 +26,11 @@ fun TasksScreen(
   openScreen: (String) -> Unit,
   viewModel: TasksViewModel = hiltViewModel()
 ) {
+  val options by viewModel.options
   val tasks = viewModel
     .tasks
     .collectAsStateWithLifecycle(emptyList())
-  TasksScreenContent(
+  TasksScreenContent(options=options,
     tasks=tasks.value,
     onAddClick = viewModel::onAddClick,
     onSettingsClick = viewModel::onSettingsClick,
@@ -45,6 +46,7 @@ fun TasksScreen(
 @Composable
 @ExperimentalMaterialApi
 fun TasksScreenContent(
+  options:List<String>,
   tasks:List<Task>,
   modifier: Modifier = Modifier,
   onAddClick: ((String) -> Unit) -> Unit,
@@ -79,7 +81,7 @@ fun TasksScreenContent(
         items(tasks, key = { it.id }) { taskItem ->
           TaskItem(
             task = taskItem,
-            options = listOf(),
+            options = options,
             onCheckChange = { onTaskCheckChange(taskItem) },
             onActionClick = { action -> onTaskActionClick(openScreen, taskItem, action) }
           )

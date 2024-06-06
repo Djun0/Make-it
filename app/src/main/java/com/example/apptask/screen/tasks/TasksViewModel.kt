@@ -23,8 +23,11 @@ class TasksViewModel @Inject constructor(
 
   //val tasks = emptyFlow<List<Task>>()
   val tasks = storageService.tasks
+  //Cập nhập lại TaskOption khi tìm nạp được giá trị cấu hình từ máy chủ
   fun loadTaskOptions() {
-    //TODO
+    // truy xuất giá trị
+    val hasEditOption = configurationService.isShowTaskEditButtonConfig
+    options.value = TaskActionOption.getOptions(hasEditOption)
   }
 
   fun onTaskCheckChange(task: Task) {

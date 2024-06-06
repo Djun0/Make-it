@@ -1,11 +1,11 @@
 
 package com.example.apptask.model.service.impl
 
-//import com.example.apptask.BuildConfig
+import com.example.apptask.BuildConfig
 import com.example.apptask.R.xml as AppConfig
 import com.example.apptask.model.service.ConfigurationService
 import com.example.apptask.model.service.trace
-import com.google.firebase.BuildConfig
+//import com.google.firebase.BuildConfig
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.get
 import com.google.firebase.remoteconfig.remoteConfig
@@ -26,11 +26,13 @@ class ConfigurationServiceImpl @Inject constructor() : ConfigurationService {
     remoteConfig.setDefaultsAsync(AppConfig.remote_config_defaults)
   }
 
-  override suspend fun fetchConfiguration(): Boolean = true
-
+//tìm nạp các giá trị từ máy chủ và được gọi ngay khi ứng dụng khởi động
+  override suspend fun fetchConfiguration(): Boolean {
+    return remoteConfig.fetchAndActivate().await()
+  }
+  //trả về giá trị boolean đã được push cho tham số  tạo trong Bảng điều khiển
   override val isShowTaskEditButtonConfig: Boolean
-    get() = true
-
+    get() = remoteConfig[SHOW_TASK_EDIT_BUTTON_KEY].asBoolean()
   companion object {
     private const val SHOW_TASK_EDIT_BUTTON_KEY = "show_task_edit_button"
     private const val FETCH_CONFIG_TRACE = "fetchConfig"
