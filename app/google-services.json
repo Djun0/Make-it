@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1096008346845",
+    "project_id": "project-java-k21",
+    "storage_bucket": "project-java-k21.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1096008346845:android:13aa1bf68acb2d54683f34",
+        "android_client_info": {
+          "package_name": "com.example.apptask"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaBz09VOf76ELZnVV-Znu1M63bQu_xjfE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
