@@ -1,6 +1,7 @@
 
 package com.example.apptask.model.service.impl
 
+import android.util.Log
 import com.example.apptask.model.User
 import com.example.apptask.model.service.AccountService
 import com.example.apptask.model.service.trace
@@ -43,12 +44,22 @@ class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth) : A
   }
 
   //Liên kết thông tin xác thực với tài khoản ẩn danh
-  override suspend fun linkAccount(email: String, password: String): Unit =
-    //đặt trong khối trace để theo dõi quá trình
-    trace(LINK_ACCOUNT_TRACE) {
-      val credential = EmailAuthProvider.getCredential(email, password)
-      auth.currentUser!!.linkWithCredential(credential).await()
+  //đặt trong khối trace để theo dõi quá trình
+  override suspend fun linkAccount(email: String, password: String): Unit = trace(LINK_ACCOUNT_TRACE) {
+    try {
+      val currentUser = auth.currentUser
+      if (currentUser != null) {
+        val credential = EmailAuthProvider.getCredential(email, password)
+        currentUser.linkWithCredential(credential).await()
+      } else {
+        throw IllegalStateException("No current user to link with")
+      }
+    } catch (e: Exception) {
+      Log.e("AccountService", "linkAccount failed", e)
+      throw e
     }
+  }
+
 
   override suspend fun deleteAccount() {
     auth.currentUser!!.delete().await()

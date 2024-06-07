@@ -19,13 +19,16 @@ class TasksViewModel @Inject constructor(
   private val storageService: StorageService,
   private val configurationService: ConfigurationService
 ) : MakeItSoViewModel(logService) {
+
   val options = mutableStateOf<List<String>>(listOf())
 
-  //val tasks = emptyFlow<List<Task>>()
+  //val tasks = emptyFlow<List<'
+  // '>>()
   val tasks = storageService.tasks
   //Cập nhập lại TaskOption khi tìm nạp được giá trị cấu hình từ máy chủ
-  fun loadTaskOptions() {
+  suspend fun loadTaskOptions() {
     // truy xuất giá trị
+    configurationService.fetchConfiguration()
     val hasEditOption = configurationService.isShowTaskEditButtonConfig
     options.value = TaskActionOption.getOptions(hasEditOption)
   }

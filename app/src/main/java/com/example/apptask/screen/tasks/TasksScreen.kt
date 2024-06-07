@@ -26,6 +26,7 @@ fun TasksScreen(
   openScreen: (String) -> Unit,
   viewModel: TasksViewModel = hiltViewModel()
 ) {
+
   val options by viewModel.options
   val tasks = viewModel
     .tasks
@@ -39,8 +40,12 @@ fun TasksScreen(
     openScreen = openScreen
   )
 
-  LaunchedEffect(viewModel) { viewModel.loadTaskOptions() }
+  LaunchedEffect(viewModel) {
+
+    viewModel.loadTaskOptions()
+  }
 }
+
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable

@@ -39,6 +39,7 @@ fun DropdownContextMenu(
             options.forEach { selectionOption ->
                 DropdownMenuItem(
                     onClick = {
+
                         isExpanded = false
                         onActionClick(selectionOption)
                     }

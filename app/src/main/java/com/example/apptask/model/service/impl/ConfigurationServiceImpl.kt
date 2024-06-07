@@ -1,12 +1,17 @@
 
 package com.example.apptask.model.service.impl
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import com.example.apptask.BuildConfig
 import com.example.apptask.R.xml as AppConfig
 import com.example.apptask.model.service.ConfigurationService
 import com.example.apptask.model.service.trace
 //import com.google.firebase.BuildConfig
 import com.google.firebase.Firebase
+import com.google.firebase.remoteconfig.ConfigUpdate
+import com.google.firebase.remoteconfig.ConfigUpdateListener
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigException
 import com.google.firebase.remoteconfig.get
 import com.google.firebase.remoteconfig.remoteConfig
 import com.google.firebase.remoteconfig.remoteConfigSettings
@@ -14,6 +19,8 @@ import javax.inject.Inject
 import kotlinx.coroutines.tasks.await
 
 class ConfigurationServiceImpl @Inject constructor() : ConfigurationService {
+
+
   private val remoteConfig
     get() = Firebase.remoteConfig
 
@@ -25,6 +32,8 @@ class ConfigurationServiceImpl @Inject constructor() : ConfigurationService {
 
     remoteConfig.setDefaultsAsync(AppConfig.remote_config_defaults)
   }
+
+
 
 //tìm nạp các giá trị từ máy chủ và được gọi ngay khi ứng dụng khởi động
   override suspend fun fetchConfiguration(): Boolean {
